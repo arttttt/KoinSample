@@ -18,7 +18,7 @@ class FragmentB: KoinFragment(R.layout.fragment_b) {
                 .popBackStack()
         }
 
-        val componentB = scope?.get<ComponentB>()
-        Timber.e(componentB?.toString())
+        val componentB = scope.get<ComponentB>()
+        Timber.e(componentB.toString())
     }
 }

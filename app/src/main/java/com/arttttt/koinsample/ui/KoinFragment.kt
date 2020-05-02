@@ -9,7 +9,7 @@ import org.koin.core.scope.Scope
 import org.koin.ext.getScopeId
 import org.koin.ext.getScopeName
 
-abstract class KoinFragment(layoutRes: Int): Fragment(layoutRes) {
+abstract class KoinFragment(layoutRes: Int): Fragment(layoutRes), KoinScopeOwner {
 
     companion object {
         private const val SCOPE_ID = "scope_name"
@@ -17,25 +17,25 @@ abstract class KoinFragment(layoutRes: Int): Fragment(layoutRes) {
 
     private var instanceStateSaved: Boolean = false
 
-    internal lateinit var scope: Scope
+    override lateinit var scope: Scope
 
     protected open var scopeId: String = getScopeId()
 
-    fun getParentScope(): Scope? {
+    private fun getParentScope(): Scope? {
         return parentFragment
             ?.childFragmentManager
             ?.fragments
             ?.lastOrNull()
-            ?.castTo<KoinFragment>()
+            ?.castTo<KoinScopeOwner>()
             ?.scope
             ?: parentFragment
-                .castTo<KoinFragment>()
+                .castTo<KoinScopeOwner>()
                 ?.scope
             ?: activity
                 ?.supportFragmentManager
                 ?.fragments
                 ?.lastOrNull()
-                ?.castTo<KoinFragment>()
+                ?.castTo<KoinScopeOwner>()
                 ?.scope
     }
 
